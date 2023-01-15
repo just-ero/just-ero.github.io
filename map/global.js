@@ -2,9 +2,11 @@ import { } from 'https://code.jquery.com/jquery-3.6.3.min.js';
 import { } from 'https://unpkg.com/leaflet@1.9.3/dist/leaflet.js';
 import { } from '/map/styling.js';
 
+const _defTileSize = 256, _defImgRes = 32;
+
 const _mapOptions = {
   background: '#FFFFFF',
-  font: null,
+  font: undefined,
 
   attributionControl: false,
   zoomControl: false,
@@ -21,13 +23,13 @@ const _mapOptions = {
 
   crs: L.CRS.Simple,
   center: [0, 0],
-  tileSize: 256,
+  tileSize: _defTileSize,
   zoom: 0
 };
 
 const _layerOptions = {
-  name: null,
-  attribution: null,
+  name: undefined,
+  attribution: undefined,
 
   keepBuffer: 2,
   opacity: 1,
@@ -84,41 +86,82 @@ export function addLayer(options = {}, show = true) {
     layer.addTo(_map);
 }
 
-export function addMarkers(layers) {
-  for (const layer in layers) {
+export async function addMarkers(layers) {
+  for (const layerId in layers) {
+    const layer = layers[layerId];
     const group = L.layerGroup();
 
-    let name = layer;
-    if (layers[layer].ico) {
-      name = `<img src='assets/${layer.toLowerCase()}.png' height='18pt'/> ${name}`;
-    }
+    const path = layer.ico ?? layerId.toLowerCase() + '.png';
+    const name = !layer.showIcon ? layerId : `<img src='assets/${path}' height='18pt' /> ${layerId}`;
 
-    layers[layer].items.forEach(item => {
+    const icon = await ico({ path: path });
+
+    layer.items.forEach(async item => {
       if (item.radius) {
         circle(item).addTo(group);
       } else if (item.coords) {
         polygon(item).addTo(group);
       } else {
-        marker(item).addTo(group);
+        marker(item).setIcon(await ico(item.ico) ?? icon).addTo(group);
       }
     });
 
     _layers.addOverlay(group, name);
 
-    if (layer.show ?? true)
+    if (layerId.show ?? true)
       group.addTo(_map);
   }
 }
 
+async function ico(ico) {
+  if (!ico || !ico.path)
+    return undefined;
+
+  const src = `assets/${ico.path}`;
+
+  if (ico.width && ico.height) {
+    return L.icon({
+      iconUrl: src,
+      iconSize: [ico.width, ico.height]
+    });
+  }
+
+  return new Promise(resolve => {
+    const img = new Image();
+
+    img.src = src;
+    img.onload = () => {
+      if (ico.height) {
+        const factor = ico.height / img.height;
+        const w = factor * img.width, h = ico.height;
+
+        resolve(L.icon({
+          iconUrl: src,
+          iconSize: [w, h]
+        }));
+      } else if (ico.width) {
+        const factor = ico.width / img.width;
+        const w = ico.width, h = factor * img.height;
+
+        resolve(L.icon({
+          iconUrl: src,
+          iconSize: [w, h]
+        }));
+      } else {
+        const factor = _defImgRes / img.height;
+        const w = factor * img.width, h = factor * img.height;
+
+        resolve(L.icon({
+          iconUrl: src,
+          iconSize: [w, h]
+        }));
+      }
+    };
+  });
+}
+
 function marker(marker) {
-  return L.marker(
-    [-marker.y, marker.x],
-    !marker.ico ? {} : {
-      icon: L.icon({
-        iconUrl: `assets/${marker.ico.path}`,
-        iconSize: [marker.ico.width, marker.ico.height]
-      })
-    }).bindTooltip(tt(marker.name, marker.desc));
+  return L.marker([-marker.y, marker.x]).bindTooltip(tt(marker.name, marker.desc));
 }
 
 function circle(circle) {
@@ -140,7 +183,7 @@ function polygon(polygon) {
   }).bindTooltip(tt(polygon.name, polygon.desc));
 }
 
-function tt(id, desc = null) {
+function tt(id, desc = undefined) {
   return L.tooltip({
     content: !desc ? id : `${id}<p style='font-size: 10pt; margin: 0;'>${desc}</p>`
   });
