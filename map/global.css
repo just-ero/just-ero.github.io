@@ -1,0 +1,34 @@
+* {
+    margin: 0px;
+}
+
+body {
+    height: 100%;
+}
+
+#map {
+    background: #FFFFFF;
+
+    font-size: 18pt;
+    font-family: "MapFont", sans-serif;
+    line-height: 1.2;
+}
+
+.leaflet-tooltip {
+    width: max-content;
+    max-width: 256px;
+
+    overflow-wrap: break-word;
+}
+
+.leaflet-tooltip > img {
+    max-width: 128px;
+    max-height: 128px;
+}
+
+.leaflet-tooltip > p {
+    font-size: 10pt;
+
+    overflow-wrap: break-word;
+    white-space: normal;
+}
