@@ -1,6 +1,6 @@
 import { } from 'https://code.jquery.com/jquery-3.6.3.min.js';
 import { } from 'https://unpkg.com/leaflet@1.9.3/dist/leaflet.js';
-import { } from '/map/styling.js';
+import { } from '/map/html-additions.js';
 
 const _defTileSize = 256, _defImgRes = 32;
 
@@ -185,6 +185,6 @@ function polygon(polygon) {
 
 function tt(id, desc = undefined) {
   return L.tooltip({
-    content: !desc ? id : `${id}<p style='font-size: 10pt; margin: 0;'>${desc}</p>`
+    content: !desc ? id : `${id}<p>${desc}</p>`
   });
 }
