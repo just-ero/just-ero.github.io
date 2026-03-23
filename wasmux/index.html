@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/wasmux/icons/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="description" content="wasmux — browser-based video editor powered by FFmpeg WASM" />
+    <meta name="color-scheme" content="light dark" />
+    <title>wasmux</title>
+    <!--
+      Inline script to set data-theme BEFORE first paint.
+      Reads the user's saved preference from localStorage, or falls back to
+      the OS preference via matchMedia. This prevents a flash of the wrong
+      theme on page load.
+    -->
+    <script>
+      (function () {
+        var t = localStorage.getItem('wasmux-theme');
+        if (t !== 'light' && t !== 'dark') {
+          t = matchMedia('(prefers-color-scheme:dark)').matches ? 'dark' : 'light';
+        }
+        document.documentElement.setAttribute('data-theme', t);
+      })();
+    </script>
+    <script type="module" crossorigin src="/wasmux/assets/index-Dihtm3QJ.js"></script>
+    <link rel="stylesheet" crossorigin href="/wasmux/assets/index-BxcTOmX2.css">
+  </head>
+  <body>
+    <div id="root"></div>
+  </body>
+</html>
