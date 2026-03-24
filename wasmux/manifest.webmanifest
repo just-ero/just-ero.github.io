@@ -5,7 +5,10 @@
   "description": "Browser-based video editor powered by FFmpeg WASM",
   "start_url": "/wasmux/",
   "scope": "/wasmux/",
-  "display": "standalone",
+  "display": "browser",
+  "launch_handler": {
+    "client_mode": "navigate-existing"
+  },
   "background_color": "#0d1118",
   "theme_color": "#0d1118",
   "icons": [
