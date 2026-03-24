@@ -6,9 +6,6 @@
   "start_url": "/wasmux/pwa/",
   "scope": "/wasmux/pwa/",
   "display": "standalone",
-  "launch_handler": {
-    "client_mode": "navigate-existing"
-  },
   "background_color": "#0d1118",
   "theme_color": "#0d1118",
   "icons": [
