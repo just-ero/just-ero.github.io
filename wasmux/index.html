@@ -9,23 +9,9 @@
     <meta name="theme-color" content="#0d1118" />
     <meta name="color-scheme" content="light dark" />
     <title>wasmux</title>
-    <!--
-      Inline script to set data-theme BEFORE first paint.
-      Reads the user's saved preference from localStorage, or falls back to
-      the OS preference via matchMedia. This prevents a flash of the wrong
-      theme on page load.
-    -->
-    <script>
-      (function () {
-        var t = localStorage.getItem('wasmux-theme');
-        if (t !== 'light' && t !== 'dark') {
-          t = matchMedia('(prefers-color-scheme:dark)').matches ? 'dark' : 'light';
-        }
-        document.documentElement.setAttribute('data-theme', t);
-      })();
-    </script>
-    <script type="module" crossorigin src="/wasmux/assets/index-CNye4Frs.js"></script>
-    <link rel="stylesheet" crossorigin href="/wasmux/assets/index-CIdbbpje.css">
+    <script src="/wasmux/theme-init.js"></script>
+    <script type="module" crossorigin src="/wasmux/assets/index-DDt15pWG.js"></script>
+    <link rel="stylesheet" crossorigin href="/wasmux/assets/index-CAoOc4SY.css">
   </head>
   <body>
     <div id="root"></div>
