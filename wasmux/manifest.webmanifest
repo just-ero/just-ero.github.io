@@ -1,11 +1,11 @@
 {
-  "id": "/wasmux/",
+  "id": "/wasmux/pwa/",
   "name": "wasmux",
   "short_name": "wasmux",
   "description": "Browser-based video editor powered by FFmpeg WASM",
-  "start_url": "/wasmux/",
-  "scope": "/wasmux/",
-  "display": "browser",
+  "start_url": "/wasmux/pwa/",
+  "scope": "/wasmux/pwa/",
+  "display": "standalone",
   "launch_handler": {
     "client_mode": "navigate-existing"
   },
